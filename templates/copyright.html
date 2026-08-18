@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ 'Telif Hakları' if session.get('lang') == 'tr' else 'Copyright' }} - BE DELUSIONAL{% endblock %}
+
+{% block content %}
+<div class="container my-5 text-light" style="max-width: 800px; min-height: 60vh;">
+    {% if session.get('lang') == 'tr' %}
+        <h2 class="mb-4">DELÜZYONEL OL: BAŞARIYA GİDEN BENZERSİZ BİR YOL</h2>
+        
+        <p class="mb-3">Telif Hakkı &copy; 2026, Yusuf A. tarafından saklıdır.</p>
+        
+        <p class="fw-bold mb-4">Tüm hakları saklıdır.</p>
+        
+        <p class="mb-4">
+            Bu yayının hiçbir bölümü, yazarın önceden yazılı izni olmaksızın elektronik, mekanik, fotokopi, kayıt veya benzeri herhangi bir form veya yöntemle çoğaltılamaz, bir veri tabanında saklanamaz veya aktarılamaz; ancak bir kitap incelemesinde veya eleştiri yazısında kısa alıntılar yapılması bu kuralın dışındadır.
+        </p>
+        
+        <p class="mb-4">
+            <strong>Uyarı:</strong> Bu kitap yalnızca bilgilendirme ve kişisel gelişim amaçlıdır. Belirtilen görüşler yazarın kendisine aittir.
+        </p>
+
+        <div class="mt-5">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-light">&larr; Ana Sayfaya Dön</a>
+        </div>
+    {% else %}
+        <h2 class="mb-4">BE DELUSIONAL: A UNIQUE WAY TO SUCCESS</h2>
+        
+        <p class="mb-3">Copyright &copy; 2026 by Yusuf A.</p>
+        
+        <p class="fw-bold mb-4">All rights reserved.</p>
+        
+        <p class="mb-4">
+            No part of this publication may be reproduced, stored in a retrieval system, or transmitted in any form or by any means—electronic, mechanical, photocopying, recording, or otherwise—without the prior written permission of the author, except for the use of brief quotations in a book review or critical article.
+        </p>
+        
+        <p class="mb-4">
+            <strong>Disclaimer:</strong> This book is intended for informational and personal development purposes only. The views expressed are those of the author.
+        </p>
+
+        <div class="mt-5">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-light">&larr; Back to Home</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

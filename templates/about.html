@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ 'Kitap Hakkında' if session.get('lang') == 'tr' else 'About Book' }} - BE DELUSIONAL
+{% endblock %}
+
+{% block content %}
+<div class="container my-5 text-light" style="max-width: 800px; min-height: 60vh;">
+    {% if session.get('lang') == 'tr' %}
+        <h2 class="mb-4">Kitap Hakkında</h2>
+        
+        <div class="chapter-body opacity-75 fs-5 lh-lg">
+            <p class="mb-4">Bu kitap 20. doğumgünüm için yazdım. Hem özel olmasını hem de kalıcı bir iz bırakmasını istedim. Bu basit web sitesi de Harvard'ın bilgisayar mühendisliği girişi CS50x'in bitirme projesiydi.</p>
+            <p class="mb-4">Yeni şeyler denediğim ve liseden beri istediğim bazı şeyleri başardığım için çok mutluyum. Umarım sözlerim ve çalışmalarım size ilham olur. İyi ki doğdum, mutlu 20. yaşlar bana!</p>
+        </div>
+
+        <div class="mt-5">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-light">&larr; Ana Sayfaya Dön</a>
+        </div>
+    {% else %}
+        <h2 class="mb-4">About the Book</h2>
+        
+        <div class="chapter-body opacity-75 fs-5 lh-lg">
+            <p class="mb-4">This book was written as my 20th birthday gift, and I also wanted this gift to be special and to leave a lasting impact. As for this simple website, it was my CS50x Harvard's Introduction to Computer Science course final project.</p>
+            <p class="mb-4">I was very happy to have tried new things and achieved some of my goals that I have had since high school. I hope that my words and work might be an inspiration for you. So, happy 20th birthday to me!</p>
+        </div>
+
+        <div class="mt-5">
+            <a href="{{ url_for('index') }}" class="btn btn-outline-light">&larr; Back to Home</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

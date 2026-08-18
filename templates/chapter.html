@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 800px; min-height: 70vh;">
+  
+  <!-- Chapter Title -->
+  <h1 class="h2 mb-4 border-bottom border-secondary pb-3 text-white">
+    {% if lang == 'tr' %}
+      {{ chapter.id }}. Bölüm: {{ chapter.title.tr }}
+    {% else %}
+      Chapter {{ chapter.id }}: {{ chapter.title.en }}
+    {% endif %}
+  </h1>
+
+  <!-- Chapter Content Blocks -->
+  <div class="chapter-body text-light opacity-75 fs-5 lh-lg">
+    {% for block in chapter.content[lang] %}
+      
+      {% if block.type == 'paragraph' %}
+        <p class="mb-4">{{ block.text | safe }}</p>
+
+      {% elif block.type == 'quote' %}
+        <!-- Styled Callout Quote Box -->
+        <blockquote class="blockquote my-4 p-4 border-start border-4 border-secondary bg-dark text-light rounded shadow-sm">
+          <p class="mb-2 fs-5 fst-italic text-white">"{{ block.text }}"</p>
+          {% if block.author %}
+            <footer class="blockquote-footer text-end text-white-50 mt-2 fs-6">
+              — <cite title="Source Title">{{ block.author }}</cite>
+            </footer>
+          {% endif %}
+        </blockquote>
+
+      {% elif block.type == 'image' %}
+        <!-- Graph / Diagram Container -->
+        <div class="my-5 text-center">
+          <img src="{{ url_for('static', filename=block.src) }}" class="img-fluid rounded border border-secondary shadow-lg" alt="{{ block.alt }}">
+          {% if block.alt %}
+            <caption class="d-block text-muted mt-2 fs-6">{{ block.alt }}</caption>
+          {% endif %}
+        </div>
+
+      <!-- Divider block removed from here -->
+
+      {% endif %}
+
+    {% endfor %}
+  </div>
+
+  <!-- Bottom Navigation Row -->
+  <div class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top border-secondary gap-2">
+    
+    <!-- Previous Chapter Button -->
+    {% if chapter.id > 1 %}
+      <a href="{{ url_for('chapter', id=chapter.id - 1) }}" class="btn btn-outline-light">
+        ← {{ 'Önceki Bölüm' if lang == 'tr' else 'Previous Chapter' }}
+      </a>
+    {% else %}
+      <button class="btn btn-outline-secondary opacity-25" disabled>
+        ← {{ 'Önceki Bölüm' if lang == 'tr' else 'Previous Chapter' }}
+      </button>
+    {% endif %}
+
+    <!-- Back to Home Button -->
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">
+      {{ 'Ana Sayfa' if lang == 'tr' else 'Home' }}
+    </a>
+
+    <!-- Next Chapter Button -->
+    {% if chapter.id < chapters|length %}
+      <a href="{{ url_for('chapter', id=chapter.id + 1) }}" class="btn btn-outline-light">
+        {{ 'Sonraki Bölüm' if lang == 'tr' else 'Next Chapter' }} →
+      </a>
+    {% else %}
+      <button class="btn btn-outline-secondary opacity-25" disabled>
+        {{ 'Sonraki Bölüm' if lang == 'tr' else 'Next Chapter' }} →
+      </button>
+    {% endif %}
+
+  </div>
+
+</div>
+{% endblock %}

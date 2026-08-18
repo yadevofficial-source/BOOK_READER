@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="{{ session.get('lang', 'en') }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}BE DELUSIONAL{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <!-- Responsive Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark border-bottom border-secondary px-3 px-md-5 py-3 custom-navbar">
+        <div class="container-fluid">
+            
+            <a href="{{ url_for('index') }}" class="navbar-brand fw-bold text-nowrap fs-4 fs-md-3 me-3">
+                {% if session.get('lang') == 'tr' %}
+                    DELÜZYONEL OL  BAŞARIYA GİDEN BENZERSİZ BİR YOL
+                {% else %}
+                    BE DELUSIONAL A UNIQUE WAY TO SUCCESS
+                {% endif %}
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 fs-5 gap-2 gap-lg-3 align-items-lg-center">
+                    
+                    <!-- About Book Link -->
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{{ url_for('about') }}">
+                            {{ 'Kitap Hakkında' if session.get('lang') == 'tr' else 'About Book' }}
+                        </a>
+                    </li>
+
+                    <!-- Language Selector Dropdown in Navbar -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-light" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            🌐 {{ 'Dil' if session.get('lang') == 'tr' else 'Language' }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item fs-6" href="{{ url_for('set_lang', lang_code='en') }}">English</a></li>
+                            <li><a class="dropdown-item fs-6" href="{{ url_for('set_lang', lang_code='tr') }}">Türkçe</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Main Content Area (Index and Chapter pages plug in here) -->
+    <main class="container my-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer text-center py-4 text-white border-top border-secondary mt-5">
+        <p class="mb-0">
+            &copy; 2026 
+            {% if session.get('lang') == 'tr' %}
+                DELÜZYONEL OL. 
+                <a href="{{ url_for('copyright') }}" class="text-white text-decoration-underline ms-2">Tüm hakları saklıdır.</a>
+            {% else %}
+                BE DELUSIONAL. 
+                <a href="{{ url_for('copyright') }}" class="text-white text-decoration-underline ms-2">All rights reserved.</a>
+            {% endif %}
+        </p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

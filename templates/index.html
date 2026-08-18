@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 800px; min-height: 70vh;">
+  
+  <!-- 1. Top Section: Cover Image (Language Adaptive) -->
+  <div class="row justify-content-center mb-5">
+    <div class="col-12 col-md-8 text-center">
+      {% if session.get('lang') == 'tr' or lang == 'tr' %}
+        <img src="{{ url_for('static', filename='BE DELUSIONAL_tr.png') }}" class="img-fluid rounded shadow border border-secondary" alt="Book Cover">
+      {% else %}
+        <img src="{{ url_for('static', filename='cover.png') }}" class="img-fluid rounded shadow border border-secondary" alt="Book Cover">
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- 2. Middle Section: Dynamic Introduction (Chapter Style) -->
+  <div class="intro-section my-5">
+    <h2 class="h3 text-white border-bottom border-secondary pb-3 mb-4">
+      {{ text.intro_heading }}
+    </h2>
+
+    <div class="chapter-body text-light opacity-75 fs-5 lh-lg">
+      <p class="mb-4">{{ text.intro_p1 }}</p>
+      <p class="mb-4">{{ text.intro_p2 }}</p>
+      <p class="fst-italic text-white mt-4">{{ text.closing }}</p>
+    </div>
+  </div>
+
+  <!-- 3. Bottom Section: Dynamic Chapter Dropdown -->
+  <div class="row my-5 pt-4 border-top border-secondary">
+    <div class="col-12">
+      <div class="dropdown w-100">
+        <button class="btn btn-outline-light btn-lg w-100 d-flex justify-content-between align-items-center py-3 px-4 fs-5" type="button" id="chapterDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          <span>Chapters: <strong class="ms-2">{{ text.select_chapter }}</strong></span>
+          <span class="dropdown-toggle"></span>
+        </button>
+        
+        <ul class="dropdown-menu dropdown-menu-dark w-100 shadow-lg" aria-labelledby="chapterDropdown">
+          {% for chapter in chapters %}
+            <li>
+              <a class="dropdown-item py-3 text-wrap fs-5" href="{{ url_for('chapter', id=chapter.id) }}">
+                {% if lang == 'tr' %}
+                  {{ chapter.id }}. Bölüm: {{ chapter.title[lang] }}
+                {% else %}
+                  Chapter {{ chapter.id }}: {{ chapter.title[lang] }}
+                {% endif %}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Review Section -->
+  <div class="row my-5 pt-4 border-top border-secondary">
+    <div class="col-12">
+      <div class="card bg-dark text-light border-secondary shadow-lg p-4">
+        <h3 class="h4 text-white border-bottom border-secondary pb-3 mb-4">
+          {% if lang == 'tr' %}Kitap İçin Değerlendirme Bırakın{% else %}Leave a Review for the Book{% endif %}
+        </h3>
+        <form action="/submit-review" method="POST" id="reviewForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">{% if lang == 'tr' %}Adınız / Takma Adınız{% else %}Your Name / Nickname{% endif %}</label>
+            <input type="text" class="form-control bg-dark text-light border-secondary" id="name" name="name" required>
+          </div>
+          <div class="mb-3">
+            <label for="review_text" class="form-label">{% if lang == 'tr' %}Değerlendirmeniz (En fazla 50 kelime){% else %}Your Review (Max 50 words){% endif %}</label>
+            <textarea class="form-control bg-dark text-light border-secondary" id="review_text" name="review_text" rows="3" required></textarea>
+            <small id="wordCount" class="text-muted">0 / 50 words</small>
+          </div>
+          <button type="submit" class="btn btn-outline-light">{% if lang == 'tr' %}Değerlendirmeyi Gönder{% else %}Submit Review{% endif %}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+    const textarea = document.getElementById('review_text');
+    const wordCountDisplay = document.getElementById('wordCount');
+    const maxWords = 50;
+
+    textarea.addEventListener('input', () => {
+        let words = textarea.value.trim().split(/\s+/).filter(Boolean);
+        if (words.length > maxWords) {
+            textarea.value = words.slice(0, maxWords).join(' ');
+            words = words.slice(0, maxWords);
+        }
+        wordCountDisplay.textContent = `${words.length} / ${maxWords} words`;
+    });
+</script>
+{% endblock %}
